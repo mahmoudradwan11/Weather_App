@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:intl/intl.dart';
 import 'package:weather/core/controller/weather_cubit.dart';
 import 'package:weather/core/controller/weather_states.dart';
 import 'package:weather/core/manger/colors.dart';
+import 'package:weather/core/manger/convert.dart';
 import 'package:weather/core/manger/images_manger.dart';
 import 'package:weather/core/manger/string.dart';
 import 'package:weather/core/manger/values.dart';
@@ -14,7 +13,7 @@ import 'package:weather/screens/widget/day_item.dart';
 import 'package:weather/screens/widget/lottie_item.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({super.key});
   var searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -84,125 +83,119 @@ class HomeScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 100.0),
                       child: Center(
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Text(
-                                ((cubit.currentCityModel!.name))
-                                    .toString()
-                                    .toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: AppFontSize.fontSize25,
-                                    color: AppColors.defaultColor),
-                              ),
-                              buildLottieItem(cubit
-                                  .currentCityModel!.weather![0].description),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    (cubit.currentCityModel!.main!.temp -
-                                            AppValues.kelvenTemp)
-                                        .truncate()
-                                        .toString(),
+                        child: Column(
+                          children: [
+                            Text(
+                              ((cubit.currentCityModel!.name))
+                                  .toString()
+                                  .toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: AppFontSize.fontSize25,
+                                  color: AppColors.defaultColor),
+                            ),
+                            buildLottieItem(cubit
+                                .currentCityModel!.weather![0].description),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  (cubit.currentCityModel!.main!.temp -
+                                          AppValues.kelvenTemp)
+                                      .truncate()
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize: AppFontSize.fontSize100,
+                                      color: AppColors.defaultColor),
+                                ),
+                                Baseline(
+                                  baseline: -25,
+                                  baselineType: TextBaseline.alphabetic,
+                                  child: Text(
+                                    '\u00B0',
                                     style: TextStyle(
-                                        fontSize: AppFontSize.fontSize100,
-                                        color: AppColors.defaultColor),
+                                      fontSize: AppFontSize.fontSize30,
+                                      color: AppColors.defaultColor,
+                                    ),
                                   ),
-                                  Baseline(
-                                    baseline: -25,
-                                    baselineType: TextBaseline.alphabetic,
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                SizedBox(
+                                  width: 200,
+                                  child: Center(
                                     child: Text(
-                                      '\u00B0',
+                                      ((cubit.currentCityModel!.weather![0]
+                                              .description))
+                                          .toString(),
                                       style: TextStyle(
-                                        fontSize: AppFontSize.fontSize30,
-                                        color: AppColors.defaultColor,
-                                      ),
+                                          fontSize: AppFontSize.fontSize20,
+                                          color: AppColors.greyColor,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Container(
-                                    width: 200,
-                                    child: Center(
-                                      child: Text(
-                                        ((cubit.currentCityModel!.weather![0]
-                                                .description))
-                                            .toString(),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                SizedBox(
+                                  width: 150,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        ('H:${(cubit.currentCityModel!.main!.tempMax - AppValues.kelvenTemp).truncate()}\u00B0'),
                                         style: TextStyle(
-                                            fontSize: AppFontSize.fontSize20,
-                                            color: AppColors.greyColor,
-                                            fontWeight: FontWeight.w500),
+                                            color: AppColors.defaultColor),
                                       ),
-                                    ),
+                                      Text(
+                                        ('L:${(cubit.currentCityModel!.main!.tempMin - AppValues.kelvenTemp).truncate()}\u00B0'),
+                                        style: TextStyle(
+                                            color: AppColors.defaultColor),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Container(
-                                    width: 150,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 220),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    height: 250,
+                                    color: Colors.transparent.withOpacity(0.4),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          ('H:${(cubit.currentCityModel!.main!.tempMax - AppValues.kelvenTemp).truncate()}\u00B0'),
+                                          AppString.forecast,
                                           style: TextStyle(
-                                              color: AppColors.defaultColor),
+                                              color: AppColors.greyColor,
+                                              fontSize: AppFontSize.fontSize20),
                                         ),
-                                        Text(
-                                          ('L:${(cubit.currentCityModel!.main!.tempMin - AppValues.kelvenTemp).truncate()}\u00B0'),
-                                          style: TextStyle(
-                                              color: AppColors.defaultColor),
+                                        const SizedBox(height: 5),
+                                        Expanded(
+                                          child: ListView.separated(
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) =>
+                                                  buildWeatherDayItem(cubit
+                                                      .cityFive!.list![index]),
+                                              separatorBuilder:
+                                                  (context, index) =>
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                              itemCount:
+                                                  cubit.cityFive!.list!.length),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 220),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      height: 250,
-                                      color:
-                                          Colors.transparent.withOpacity(0.4),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            AppString.forecast,
-                                            style: TextStyle(
-                                                color: AppColors.greyColor,
-                                                fontSize:
-                                                    AppFontSize.fontSize20),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Expanded(
-                                            child: ListView.separated(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemBuilder: (context, index) =>
-                                                    buildWeatherDayItem(cubit
-                                                        .cityFive!
-                                                        .list![index]),
-                                                separatorBuilder:
-                                                    (context, index) =>
-                                                        const SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                itemCount: cubit
-                                                    .cityFive!.list!.length),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -211,9 +204,9 @@ class HomeScreen extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [
-                    HexColor('170931'),
-                    HexColor('130F31'),
-                    HexColor('4F1FA6'),
+                    AppColors.thirdColor,
+                    AppColors.fourthColor,
+                    AppColors.daleyColor
                   ])),
                   height: 600,
                   width: double.infinity,
@@ -245,52 +238,58 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 BuildSpecificationPrayItem(
                                   title: 'Fajr',
-                                  subTitle: convertTimeTo12Hour(cubit.prayModel!.data!.timings!.fajr!),
+                                  subTitle: convertTimeTo12Hour(
+                                      cubit.prayModel!.data!.timings!.fajr!),
                                   darkBackGroundColor:
-                                      HexColor('#9B9CB7').withOpacity(0.36),
+                                      AppColors.prayItemColor.withOpacity(0.36),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 BuildSpecificationPrayItem(
                                     title: 'Sunrise',
-                                    subTitle:convertTimeTo12Hour(cubit.prayModel!.data!.timings!.sunrise!),
+                                    subTitle: convertTimeTo12Hour(cubit
+                                        .prayModel!.data!.timings!.sunrise!),
                                     darkBackGroundColor:
-                                        Colors.black.withOpacity(0.36)),
-                                SizedBox(
+                                        AppColors.blackColor.withOpacity(0.36)),
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 BuildSpecificationPrayItem(
                                   title: 'Dhuhr',
-                                  subTitle:convertTimeTo12Hour(cubit.prayModel!.data!.timings!.dhuhr!),
+                                  subTitle: convertTimeTo12Hour(
+                                      cubit.prayModel!.data!.timings!.dhuhr!),
                                   darkBackGroundColor:
-                                      HexColor('#9B9CB7').withOpacity(0.36),
+                                      AppColors.prayItemColor.withOpacity(0.36),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 BuildSpecificationPrayItem(
                                     title: 'Asr',
-                                    subTitle:convertTimeTo12Hour(cubit.prayModel!.data!.timings!.asr!),
+                                    subTitle: convertTimeTo12Hour(
+                                        cubit.prayModel!.data!.timings!.asr!),
                                     darkBackGroundColor:
-                                        Colors.black.withOpacity(0.36)),
-                                SizedBox(
+                                        AppColors.blackColor.withOpacity(0.36)),
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 BuildSpecificationPrayItem(
                                   title: 'Maghrib',
-                                  subTitle: convertTimeTo12Hour(cubit.prayModel!.data!.timings!.maghrib!),
+                                  subTitle: convertTimeTo12Hour(
+                                      cubit.prayModel!.data!.timings!.maghrib!),
                                   darkBackGroundColor:
-                                      HexColor('#9B9CB7').withOpacity(0.36),
+                                      AppColors.prayItemColor.withOpacity(0.36),
                                 ),
                                 const SizedBox(
                                   height: 5,
                                 ),
                                 BuildSpecificationPrayItem(
                                     title: 'Isha',
-                                    subTitle: convertTimeTo12Hour(cubit.prayModel!.data!.timings!.isha!),
+                                    subTitle: convertTimeTo12Hour(
+                                        cubit.prayModel!.data!.timings!.isha!),
                                     darkBackGroundColor:
-                                        Colors.black.withOpacity(0.36)),
+                                        AppColors.blackColor.withOpacity(0.36)),
                               ],
                             ),
                           ),
@@ -302,31 +301,38 @@ class HomeScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Pray Time in The City',
-                                style: TextStyle(color: AppColors.greyColor,fontSize: AppFontSize.fontSize25),
+                                AppString.pray,
+                                style: TextStyle(
+                                    color: AppColors.greyColor,
+                                    fontSize: AppFontSize.fontSize25),
                               ),
                               Text(
                                 '${cubit.currentCityModel!.name!} ',
-                                style:  TextStyle(color:AppColors.defaultColor,fontSize: AppFontSize.fontSize20),
+                                style: TextStyle(
+                                    color: AppColors.defaultColor,
+                                    fontSize: AppFontSize.fontSize20),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Text(
                                 '${cubit.prayModel!.data!.date!.gregorian!.day!} '
-                                    '${cubit.prayModel!.data!.date!.gregorian!.month!.en }, '
-                          '${cubit.prayModel!.data!.date!.gregorian!.year}'
-                                    ,
-                                style: TextStyle(color:AppColors.defaultColor,fontSize: AppFontSize.fontSize15),
+                                '${cubit.prayModel!.data!.date!.gregorian!.month!.en}, '
+                                '${cubit.prayModel!.data!.date!.gregorian!.year}',
+                                style: TextStyle(
+                                    color: AppColors.defaultColor,
+                                    fontSize: AppFontSize.fontSize15),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 1,
                               ),
                               Text(
                                 '${cubit.prayModel!.data!.date!.hijri!.day} '
-                                    '${cubit.prayModel!.data!.date!.hijri!.month!.en }, '
-                                    '${cubit.prayModel!.data!.date!.hijri!.year}',
-                                style: TextStyle(color:AppColors.defaultColor,fontSize: AppFontSize.fontSize15),
+                                '${cubit.prayModel!.data!.date!.hijri!.month!.en}, '
+                                '${cubit.prayModel!.data!.date!.hijri!.year}',
+                                style: TextStyle(
+                                    color: AppColors.defaultColor,
+                                    fontSize: AppFontSize.fontSize15),
                               ),
                             ],
                           ),
@@ -338,9 +344,4 @@ class HomeScreen extends StatelessWidget {
           ));
         });
   }
-}
-String convertTimeTo12Hour(String time){
-  DateTime dateTime = DateFormat('HH:mm').parse(time);
-  String timeIn12 = DateFormat('hh:mm a').format(dateTime);
-  return timeIn12;
 }

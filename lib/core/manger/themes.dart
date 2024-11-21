@@ -3,27 +3,27 @@ import 'package:weather/core/manger/colors.dart';
 
 ThemeData lightTheme = ThemeData(
   useMaterial3: false,
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     titleSpacing: 20.0,
     backgroundColor: Colors.white,
     elevation: 0.0,
     titleTextStyle: TextStyle(
-      color: Colors.black,
+      color: AppColors.blackColor,
       fontSize: 20.0,
       fontWeight: FontWeight.w500,
     ),
     iconTheme: IconThemeData(
-      color: Colors.black,
+      color: AppColors.blackColor,
     ),
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: AppColors.defaultColor,
   ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.black,
+    selectedItemColor: AppColors.blackColor,
     elevation: 20.0,
-    backgroundColor: Colors.white,
+    backgroundColor: AppColors.defaultColor,
   ),
   scaffoldBackgroundColor: AppColors.defaultColor,
 );
