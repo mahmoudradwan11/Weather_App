@@ -5,7 +5,6 @@ class DioHelper {
   static late Dio dio;
   static init() {
     dio = Dio(BaseOptions(
-      baseUrl: ApiConstants.baseApiBase,
       receiveDataWhenStatusError: true,
     ));
   }

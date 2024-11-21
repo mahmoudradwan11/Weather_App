@@ -5,6 +5,7 @@ import 'package:weather/core/network/remote/api_constants.dart';
 import 'package:weather/core/network/remote/dio_helper.dart';
 import 'package:weather/model/city_five_day_model.dart';
 import 'package:weather/model/current_city_model.dart';
+import 'package:weather/model/pray_model.dart';
 
 class WeatherCubit extends Cubit<WeatherStates> {
   WeatherCubit() : super(WeatherInitialState());
@@ -23,12 +24,12 @@ class WeatherCubit extends Cubit<WeatherStates> {
       print(currentCityModel!.main!.pressure);
       emit(WeatherGetState());
       getCurrentWeatherForFiveDays(city);
+      getPrayTime(city);
     }).catchError((error) {
       print(error.toString());
       emit(WeatherErrorState());
     });
   }
-
   CityFive? cityFive;
   void getCurrentWeatherForFiveDays(city) {
     emit(WeatherFiveDaysLoadingState());
@@ -38,11 +39,29 @@ class WeatherCubit extends Cubit<WeatherStates> {
       cityFive = CityFive.fromJson(value.data);
       print(cityFive!.list![0].dtTxt);
       print(cityFive!.list![1].weather![0].description);
-
       emit(WeatherFiveDaysState());
     }).catchError((error) {
       print(error.toString());
       emit(WeatherFiveDaysErrorState());
+    });
+  }
+
+  PrayModel? prayModel;
+  void getPrayTime(city) {
+    emit(PrayTimeLoadingState());
+    DioHelper.getData(
+      url:
+          '${ApiConstants.prayTimeApi}${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+      query: {
+        'address':city
+      }
+    ).then((value) {
+      prayModel = PrayModel.fromJson(value.data);
+      print(prayModel!.data!.timings!.maghrib!);
+      emit(PrayTimeGetState());
+    }).catchError((error){
+      print(error.toString());
+      emit(PrayTimeErrorState());
     });
   }
 }

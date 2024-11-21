@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:weather/core/controller/weather_cubit.dart';
 import 'package:weather/core/controller/weather_states.dart';
 import 'package:weather/core/manger/colors.dart';
 import 'package:weather/core/manger/images_manger.dart';
 import 'package:weather/core/manger/string.dart';
 import 'package:weather/core/manger/values.dart';
+import 'package:weather/screens/widget/build_pray_time_item.dart';
 import 'package:weather/screens/widget/day_item.dart';
 import 'package:weather/screens/widget/lottie_item.dart';
 
@@ -19,7 +22,7 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = WeatherCubit.get(context);
-          if (cubit.cityFive == null) {
+          if (cubit.prayModel == null) {
             return Scaffold(
               body: SvgPicture.asset(
                 AppImages.appBackGroundImage,
@@ -158,7 +161,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 230),
+                                    padding: const EdgeInsets.only(top: 220),
                                     child: Container(
                                       padding: const EdgeInsets.all(10),
                                       height: 250,
@@ -205,9 +208,139 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    HexColor('170931'),
+                    HexColor('130F31'),
+                    HexColor('4F1FA6'),
+                  ])),
+                  height: 600,
+                  width: double.infinity,
+                  child: Stack(
+                      alignment: AlignmentDirectional.bottomCenter,
+                      children: [
+                        Positioned(
+                          top: 200,
+                          right: -20,
+                          child: SizedBox(
+                            height: 250,
+                            width: 280,
+                            child: SvgPicture.asset(AppImages.moonImage),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 300,
+                          width: double.infinity,
+                          child: SvgPicture.asset(
+                            AppImages.masgedBackGround,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                BuildSpecificationPrayItem(
+                                  title: 'Fajr',
+                                  subTitle: convertTimeTo12Hour(cubit.prayModel!.data!.timings!.fajr!),
+                                  darkBackGroundColor:
+                                      HexColor('#9B9CB7').withOpacity(0.36),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                BuildSpecificationPrayItem(
+                                    title: 'Sunrise',
+                                    subTitle:convertTimeTo12Hour(cubit.prayModel!.data!.timings!.sunrise!),
+                                    darkBackGroundColor:
+                                        Colors.black.withOpacity(0.36)),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                BuildSpecificationPrayItem(
+                                  title: 'Dhuhr',
+                                  subTitle:convertTimeTo12Hour(cubit.prayModel!.data!.timings!.dhuhr!),
+                                  darkBackGroundColor:
+                                      HexColor('#9B9CB7').withOpacity(0.36),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                BuildSpecificationPrayItem(
+                                    title: 'Asr',
+                                    subTitle:convertTimeTo12Hour(cubit.prayModel!.data!.timings!.asr!),
+                                    darkBackGroundColor:
+                                        Colors.black.withOpacity(0.36)),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                BuildSpecificationPrayItem(
+                                  title: 'Maghrib',
+                                  subTitle: convertTimeTo12Hour(cubit.prayModel!.data!.timings!.maghrib!),
+                                  darkBackGroundColor:
+                                      HexColor('#9B9CB7').withOpacity(0.36),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                BuildSpecificationPrayItem(
+                                    title: 'Isha',
+                                    subTitle: convertTimeTo12Hour(cubit.prayModel!.data!.timings!.isha!),
+                                    darkBackGroundColor:
+                                        Colors.black.withOpacity(0.36)),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 50,
+                          left: 20,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Pray Time in The City',
+                                style: TextStyle(color: AppColors.greyColor,fontSize: AppFontSize.fontSize25),
+                              ),
+                              Text(
+                                '${cubit.currentCityModel!.name!} ',
+                                style:  TextStyle(color:AppColors.defaultColor,fontSize: AppFontSize.fontSize20),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                '${cubit.prayModel!.data!.date!.gregorian!.day!} '
+                                    '${cubit.prayModel!.data!.date!.gregorian!.month!.en }, '
+                          '${cubit.prayModel!.data!.date!.gregorian!.year}'
+                                    ,
+                                style: TextStyle(color:AppColors.defaultColor,fontSize: AppFontSize.fontSize15),
+                              ),
+                              SizedBox(
+                                height: 1,
+                              ),
+                              Text(
+                                '${cubit.prayModel!.data!.date!.hijri!.day} '
+                                    '${cubit.prayModel!.data!.date!.hijri!.month!.en }, '
+                                    '${cubit.prayModel!.data!.date!.hijri!.year}',
+                                style: TextStyle(color:AppColors.defaultColor,fontSize: AppFontSize.fontSize15),
+                              ),
+                            ],
+                          ),
+                        )
+                      ]),
+                ),
               ],
             ),
           ));
         });
   }
+}
+String convertTimeTo12Hour(String time){
+  DateTime dateTime = DateFormat('HH:mm').parse(time);
+  String timeIn12 = DateFormat('hh:mm a').format(dateTime);
+  return timeIn12;
 }

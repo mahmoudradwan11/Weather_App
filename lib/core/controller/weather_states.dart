@@ -13,3 +13,9 @@ class WeatherFiveDaysLoadingState extends WeatherStates {}
 class WeatherFiveDaysState extends WeatherStates {}
 
 class WeatherFiveDaysErrorState extends WeatherStates {}
+
+class PrayTimeLoadingState extends WeatherStates {}
+
+class PrayTimeGetState extends WeatherStates {}
+
+class PrayTimeErrorState extends WeatherStates {}

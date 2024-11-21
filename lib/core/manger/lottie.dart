@@ -9,6 +9,6 @@ class AppAnimation {
   static const String drizzleSky = '$lottiePath/Drizzle.json';
   static const String hazeSky = '$lottiePath/HAZE.json';
   static const String rainSky = '$lottiePath/Rain.json';
-  static const String snowSky = '$lottiePath/Snow.json';
+  static const String snowSky = '$lottiePath/Rain.json';
   static const String stormSky = '$lottiePath/Thunderstorm.json';
 }
