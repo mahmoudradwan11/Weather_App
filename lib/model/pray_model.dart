@@ -19,10 +19,9 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     timings =
-    json['timings'] != null ?  Timings.fromJson(json['timings']) : null;
-    date = json['date'] != null ?  DateModel.fromJson(json['date']) : null;
+        json['timings'] != null ? Timings.fromJson(json['timings']) : null;
+    date = json['date'] != null ? DateModel.fromJson(json['date']) : null;
   }
-
 }
 
 class Timings {
@@ -40,16 +39,16 @@ class Timings {
 
   Timings(
       {this.fajr,
-        this.sunrise,
-        this.dhuhr,
-        this.asr,
-        this.sunset,
-        this.maghrib,
-        this.isha,
-        this.imsak,
-        this.midnight,
-        this.firstthird,
-        this.lastthird});
+      this.sunrise,
+      this.dhuhr,
+      this.asr,
+      this.sunset,
+      this.maghrib,
+      this.isha,
+      this.imsak,
+      this.midnight,
+      this.firstthird,
+      this.lastthird});
 
   Timings.fromJson(Map<String, dynamic> json) {
     fajr = json['Fajr'];
@@ -64,9 +63,9 @@ class Timings {
     firstthird = json['Firstthird'];
     lastthird = json['Lastthird'];
   }
-
 }
-class DateModel{
+
+class DateModel {
   String? readable;
   String? timestamp;
   Hijri? hijri;
@@ -83,6 +82,7 @@ class DateModel{
         : null;
   }
 }
+
 class Hijri {
   String? date;
   String? format;
@@ -90,24 +90,26 @@ class Hijri {
   Weekday? weekday;
   Month? month;
   String? year;
-  Hijri(
-      {this.date,
-        this.format,
-        this.day,
-        this.weekday,
-        this.month,
-        this.year,});
+  Hijri({
+    this.date,
+    this.format,
+    this.day,
+    this.weekday,
+    this.month,
+    this.year,
+  });
 
   Hijri.fromJson(Map<String, dynamic> json) {
     date = json['date'];
     format = json['format'];
     day = json['day'];
     weekday =
-    json['weekday'] != null ? new Weekday.fromJson(json['weekday']) : null;
+        json['weekday'] != null ? new Weekday.fromJson(json['weekday']) : null;
     month = json['month'] != null ? new Month.fromJson(json['month']) : null;
     year = json['year'];
-    }
+  }
 }
+
 class Weekday {
   String? en;
   String? ar;
@@ -149,25 +151,26 @@ class Gregorian {
   WeekdayG? weekday;
   MonthG? month;
   String? year;
-  Gregorian(
-      {this.date,
-        this.format,
-        this.day,
-        this.weekday,
-        this.month,
-        this.year,});
+  Gregorian({
+    this.date,
+    this.format,
+    this.day,
+    this.weekday,
+    this.month,
+    this.year,
+  });
 
   Gregorian.fromJson(Map<String, dynamic> json) {
     date = json['date'];
     format = json['format'];
     day = json['day'];
     weekday =
-    json['weekday'] != null ? WeekdayG.fromJson(json['weekday']) : null;
+        json['weekday'] != null ? WeekdayG.fromJson(json['weekday']) : null;
     month = json['month'] != null ? MonthG.fromJson(json['month']) : null;
     year = json['year'];
   }
-
 }
+
 class WeekdayG {
   String? en;
 
@@ -178,7 +181,7 @@ class WeekdayG {
   }
 }
 
-class MonthG{
+class MonthG {
   dynamic number;
   String? en;
 
@@ -189,5 +192,3 @@ class MonthG{
     en = json['en'];
   }
 }
-
-
