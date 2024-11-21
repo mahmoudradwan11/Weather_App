@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/core/manger/colors.dart';
 import 'package:weather/core/manger/values.dart';
@@ -10,8 +9,10 @@ Widget buildWeatherDayItem(ListDays day) => Container(
       padding: const EdgeInsets.all(10),
       width: 75,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-            colors: [HexColor('593664').withOpacity(0.5), HexColor('362A84')]),
+        gradient: LinearGradient(colors: [
+          AppColors.primeColor.withOpacity(0.5),
+          AppColors.secColor
+        ]),
         borderRadius: BorderRadius.circular(50),
       ),
       child: Column(
@@ -39,7 +40,7 @@ Widget buildWeatherDayItem(ListDays day) => Container(
                 baseline: 2,
                 baselineType: TextBaseline.alphabetic,
                 child: Text(
-                  '\u00B0', // علامة درجة الحرارة
+                  '\u00B0',
                   style: TextStyle(
                     fontSize: AppFontSize.fontSize10,
                     color: AppColors.defaultColor,
